@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>第六組 | 凱比互動娛樂專案</title>
     <style>
         /* 基礎重置與字體 */
@@ -17,6 +17,7 @@
             background-color: #f4f7f6;
             color: #333;
             line-height: 1.6;
+            overflow-x: hidden; /* 防止手機版橫向捲動 */
         }
 
         /* 導覽列 */
@@ -142,6 +143,7 @@
             border-radius: 10px;
             border-left: 5px solid #ffc107;
             width: 280px;
+            flex-grow: 1; /* 讓小螢幕自動撐滿 */
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         
@@ -151,7 +153,7 @@
         /* 核心功能卡片 (2欄) */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 改為 280px 適應手機 */
             gap: 2rem;
         }
 
@@ -201,14 +203,13 @@
             padding: 2.5rem;
             border-radius: 15px;
             color: white;
-            flex-wrap: wrap;
+            flex-wrap: nowrap; /* 預設不換行 */
             gap: 1rem;
         }
 
         .flow-step {
             text-align: center;
             flex: 1;
-            min-width: 150px;
         }
 
         .flow-icon {
@@ -220,6 +221,7 @@
             font-size: 2rem;
             color: #ffc107;
             font-weight: bold;
+            transition: transform 0.3s;
         }
 
         .flow-desc {
@@ -332,6 +334,57 @@
             color: #aaa;
             flex-wrap: wrap;
         }
+
+
+        /* ========================================= */
+        /* 手機版響應式設計 (Responsive Web Design) */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            
+            /* 調整標題大小與間距 */
+            .hero { padding: 100px 20px 60px; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero h3 { font-size: 1.2rem; }
+            section { padding: 3rem 1.5rem; }
+            .section-bg { padding: 2rem 1.5rem; }
+            
+            /* 流程圖：改為上下排列，箭頭往下指 */
+            .flow-container {
+                flex-direction: column;
+                padding: 1.5rem;
+            }
+            .flow-arrow {
+                transform: rotate(90deg); /* 箭頭旋轉向下 */
+                margin: 5px 0;
+            }
+
+            /* 手風琴特效取消：手機改為直接全部展開閱讀，增加 UX */
+            .accordion-container {
+                flex-direction: column; /* 改為上下排列 */
+                height: auto; /* 取消固定高度 */
+            }
+            .acc-card {
+                flex: auto; /* 取消伸展比例 */
+                width: 100%;
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            .acc-card h3 {
+                white-space: normal; /* 允許標題換行 */
+            }
+            .acc-card:hover {
+                transform: none; /* 取消手機上的上浮動畫 */
+            }
+            .acc-details {
+                opacity: 1; /* 預設完全顯示內容 */
+                max-height: 500px;
+                margin-top: 1rem;
+                min-width: unset;
+            }
+
+            /* 導覽列標題縮小 */
+            .logo { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body>
@@ -423,7 +476,7 @@
 
     <section>
         <h2>專案綜覽與未來展望</h2>
-        <p style="text-align: center; color: #666; margin-bottom: 2rem;">滑鼠懸停於卡片上以檢視詳細內容</p>
+        <p style="text-align: center; color: #666; margin-bottom: 2rem;">(電腦版支援滑鼠懸停展開卡片)</p>
         
         <div class="accordion-container">
             
@@ -467,4 +520,23 @@
     </section>
 
     <footer>
-        <div class="footer
+        <div class="footer-slogans">
+            <span>科技融入生活</span> | 
+            <span>互動創造陪伴</span> | 
+            <span>創新驅動未來</span>
+        </div>
+        
+        <h2>第六組 | 凱比互動娛樂專案</h2>
+        
+        <div class="team-members">
+            <span>組員：</span>
+            <span>王翔安</span> | 
+            <span>楊子翔</span> | 
+            <span>李博安</span> | 
+            <span>陳允中</span>
+        </div>
+        <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.5;">NUWA ROBOTICS</p>
+    </footer>
+
+</body>
+</html>
