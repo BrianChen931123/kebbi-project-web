@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第六組 | 凱比 AI 感測互動專案</title>
+    <title>第六組 | 凱比互動娛樂專案</title>
     <style>
         /* 基礎重置與字體 */
         * {
@@ -14,7 +14,7 @@
         }
 
         body {
-            background-color: #f8f9fa;
+            background-color: #f4f7f6;
             color: #333;
             line-height: 1.6;
         }
@@ -46,15 +46,23 @@
 
         /* 首頁橫幅 */
         .hero {
-            background: linear-gradient(135deg, #007BFF 0%, #00c6ff 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            padding: 150px 20px 100px;
+            padding: 140px 20px 80px;
             text-align: center;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        .hero h3 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: #d1e8ff;
         }
 
         .hero p {
@@ -73,6 +81,10 @@
 
         .section-bg {
             background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            margin-bottom: 3rem;
+            padding: 4rem 2rem;
         }
 
         h2 {
@@ -115,22 +127,127 @@
             transform: scale(1.02);
         }
 
-        /* 核心技術卡片 - 動態手風琴 (Hover Accordion) 效果 */
-        .architecture {
+        /* 設計目標清單 */
+        .goals-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .goal-item {
+            background: #f8fbff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 5px solid #ffc107;
+            width: 280px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .goal-item h4 { color: #333; margin-bottom: 0.5rem; font-size: 1.1rem;}
+        .goal-item p { font-size: 0.95rem; color: #555; }
+
+        /* 核心功能卡片 (2欄) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border-top: 5px solid #007BFF;
+            position: relative;
+        }
+
+        .feature-card:nth-child(2) { border-top-color: #ffc107; }
+
+        .feature-number {
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            background: #007BFF;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .feature-card:nth-child(2) .feature-number { background: #ffc107; color: #333;}
+
+        .feature-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            margin-top: 10px;
+        }
+
+        /* 系統流程圖 UI */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #2c3e50;
+            padding: 2.5rem;
+            border-radius: 15px;
+            color: white;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .flow-step {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .flow-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .flow-desc {
+            margin-top: 2rem;
+            text-align: justify;
+            font-size: 1.1rem;
+            color: #555;
+            background: #f1f3f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 5px solid #2c3e50;
+        }
+
+        /* 手風琴 (Hover Accordion) 效果區塊 */
+        .accordion-container {
             display: flex;
             justify-content: center;
             gap: 1rem;
-            height: 450px; /* 固定高度 */
+            height: 400px;
             width: 100%;
         }
 
-        .card {
-            flex: 1; /* 預設寬度比例 */
+        .acc-card {
+            flex: 1; 
             background: white;
             border-radius: 15px;
-            padding: 2rem 1rem;
+            padding: 2rem 1.5rem;
             box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            /* 動畫過渡設定：讓寬度變化的過程順滑 */
             transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             cursor: pointer;
             overflow: hidden;
@@ -141,81 +258,70 @@
             position: relative;
         }
 
-        /* 替四張卡片設定不同的頂部顏色 */
-        .card:nth-child(1) { border-top-color: #007BFF; }
-        .card:nth-child(2) { border-top-color: #17a2b8; }
-        .card:nth-child(3) { border-top-color: #f39c12; }
-        .card:nth-child(4) { border-top-color: #e74c3c; }
+        .acc-card:nth-child(1) { border-top-color: #007BFF; }
+        .acc-card:nth-child(2) { border-top-color: #17a2b8; }
+        .acc-card:nth-child(3) { border-top-color: #ffc107; }
+        .acc-card:nth-child(4) { border-top-color: #e74c3c; }
 
-        /* 滑鼠放上去時，寬度放大 3 倍，並稍微上浮 */
-        .card:hover {
+        .acc-card:hover {
             flex: 3;
             box-shadow: 0 15px 30px rgba(0,0,0,0.15);
             transform: translateY(-5px);
             background: #f8fbff;
         }
 
-        .card-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
+        .acc-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
             transition: transform 0.5s;
         }
 
-        .card:hover .card-icon {
-            transform: scale(1.1);
-        }
+        .acc-card:hover .acc-icon { transform: scale(1.1); }
 
-        .card h3 {
+        .acc-card h3 {
             color: #333;
             font-size: 1.3rem;
-            white-space: nowrap; /* 標題不換行 */
+            white-space: nowrap; 
             transition: color 0.3s;
         }
 
-        .card:hover h3 {
-            color: #007BFF;
-        }
+        .acc-card:hover h3 { color: #007BFF; }
 
-        /* 隱藏的詳細內容，滑鼠放上去才顯示 */
-        .card-details {
+        .acc-details {
             opacity: 0;
             max-height: 0;
             transition: all 0.5s ease;
             text-align: justify;
             width: 100%;
-            min-width: 250px; /* 防止寬度變化時文字被擠壓變形 */
+            min-width: 250px; 
             margin-top: 0;
+            color: #555;
+            font-size: 0.95rem;
         }
 
-        .card:hover .card-details {
+        .acc-card:hover .acc-details {
             opacity: 1;
             max-height: 300px;
             margin-top: 1.5rem;
         }
 
-        .tech-tags {
-            margin-top: 1rem;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: #e9ecef;
-            color: #495057;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-        }
-
         /* 頁尾 */
         footer {
-            background-color: #2c3e50;
+            background-color: #1a1a1a;
             color: white;
             text-align: center;
-            padding: 3rem 2rem;
+            padding: 4rem 2rem 2rem;
             margin-top: 3rem;
+        }
+
+        .footer-slogans {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            color: #ffc107;
+            font-weight: bold;
+            flex-wrap: wrap;
         }
 
         .team-members {
@@ -237,70 +343,123 @@
     </header>
 
     <section class="hero">
-        <h1>給長輩最溫暖的守護精靈</h1>
-        <p>本專案以 Kebbi 機器人為載體，結合 NUWA CODE LAB 模型設計，打造具備「娛樂冷笑話」與「日常健康關懷」的雙核心陪伴系統，讓獨居長輩獲得如同家人般的陪伴，成為科技與人類自然互動的橋樑。</p>
+        <h1>凱比互動娛樂專案</h1>
+        <h3>機器人 × 日常生活 ｜ 互動、陪伴、娛樂</h3>
+        <p>讓科技走進生活每一天</p>
     </section>
 
     <section>
-        <h2>期末專題海報展示</h2>
+        <h2>期末專題海報</h2>
         <div class="poster-container">
             <img src="poster.jpg" alt="第六組期末海報">
         </div>
-        <p style="text-align:center; color:#888; margin-top:15px; font-size: 0.9rem;">
-            (若無顯示圖片，請確認圖檔名稱是否為 poster.jpg)
-        </p>
     </section>
 
     <section class="section-bg">
-        <h2>專案四大核心功能</h2>
+        <h2>設計目標</h2>
+        <div class="goals-container">
+            <div class="goal-item">
+                <h4>融入生活</h4>
+                <p>讓機器人從展示品走向日常互動工具</p>
+            </div>
+            <div class="goal-item">
+                <h4>陪伴情感</h4>
+                <p>透過情緒互動，減少焦慮</p>
+            </div>
+            <div class="goal-item">
+                <h4>提升陪伴感</h4>
+                <p>以聲音、表情、燈光與動作強化互動</p>
+            </div>
+            <div class="goal-item">
+                <h4>創造使用動機</h4>
+                <p>以趣味內容提高主動接觸意願</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>核心功能</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-number">1</div>
+                <h3>超級冷笑話</h3>
+                <p>使用者講話體驗後、Kebbi 播放冷笑話內容，並依互動情境做回饋，動作與表情回饋，提升興趣與參與感，促使用者的日常愉悅經驗與能力，並深入與機器人的距離。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-number">2</div>
+                <h3>命運抽籤</h3>
+                <p>使用者可透過聲控啟動抽籤流程，系統隨機抽取一句命運籤建議，並以語音與表情動作呈現結果，增加使用趣味性。互動過程日常陪伴性，使機器人不只是語音機器，也能提供情緒安慰感。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-bg">
+        <h2>程式邏輯 / 系統流程</h2>
+        <div class="flow-container">
+            <div class="flow-step">
+                <div class="flow-icon">🎙️</div>
+                <div>聲音輸入</div>
+            </div>
+            <div class="flow-arrow">➔</div>
+            <div class="flow-step">
+                <div class="flow-icon">🧠</div>
+                <div>系統判斷功能</div>
+            </div>
+            <div class="flow-arrow">➔</div>
+            <div class="flow-step">
+                <div class="flow-icon">⚙️</div>
+                <div>執行對應邏輯</div>
+            </div>
+            <div class="flow-arrow">➔</div>
+            <div class="flow-step">
+                <div class="flow-icon">✨</div>
+                <div>語音 / 表情 / 動作 / 燈光回饋</div>
+            </div>
+        </div>
+        <div class="flow-desc">
+            本專案以模組化積木為主要核心，透過 Nuwa Code Lab 積木邏輯開展不同互動事件，再分別呼叫冷笑話與抽籤模組，最後整合語音輸出、臉部表情、燈光與動作完成回饋。
+        </div>
+    </section>
+
+    <section>
+        <h2>專案綜覽與未來展望</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 2rem;">滑鼠懸停於卡片上以檢視詳細內容</p>
         
-        <div class="architecture">
+        <div class="accordion-container">
             
-            <div class="card">
-                <div class="card-icon">👋</div>
-                <h3>迎賓引導與規則宣導</h3>
-                <div class="card-details">
-                    <p>啟動時，凱比會主動揮手打招呼，並以清晰親切的語音說明互動規則。透過明確告知「摸頭代表肯定、摸肚子代表否定」，大幅降低長輩與機器人互動的學習門檻。</p>
-                    <div class="tech-tags">
-                        <span class="tag">開場設計</span>
-                        <span class="tag">語音引導</span>
-                    </div>
+            <div class="acc-card">
+                <div class="acc-icon">📖</div>
+                <h3>專案背景 / 設計動機</h3>
+                <div class="acc-details">
+                    <p>本專案以 Kebbi 機器人為互動載體，結合 Nuwa Code Lab 視覺化程式設計，設計新玩具具有娛樂性與陪伴感的互動功能。專案核心目標是讓家庭成員在學習、遊戲過程機器人如同家人般陪伴，成為人與科技之間更自然的互動橋樑。透過聲音與肢體輸入，多模態回饋與情境應用，Kebbi 可增進兒童學習陪伴、居家生活互動、日常清潔與照顧生活情境中的豐富樂趣。</p>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-icon">🎭</div>
-                <h3>冷笑話互動與評分</h3>
-                <div class="card-details">
-                    <p>內建精選冷笑話題庫。講完笑話後，系統會依據長輩的觸摸回饋進行分數加總，給予得意嘲諷（發紅光）或裝傻尷尬（發藍光）的生動反應，顛覆傳統單向說話模式。</p>
-                    <div class="tech-tags">
-                        <span class="tag">冷笑話遊戲</span>
-                        <span class="tag">情緒燈光回饋</span>
-                    </div>
+            <div class="acc-card">
+                <div class="acc-icon">🏠</div>
+                <h3>應用情境</h3>
+                <div class="acc-details">
+                    <p>本系統適合應用於家庭陪伴、遊戲娛樂、兒童學習與輔助教育場域、具備娛樂陪伴使用者互動與學習，Kebbi 除作為輔助陪伴，可增進使用者互動體驗，讓日常生活中充滿樂趣與陪伴趣味。</p>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-icon">💖</div>
-                <h3>日常守護與情境問候</h3>
-                <div class="card-details">
-                    <p>捨棄冷冰冰的指令，內建涵蓋「健康關懷、作息追蹤、休閒娛樂」等多元情境的在地化問候語料庫，透過隨機抽取機制，讓長輩每次觸碰都能獲得專屬且不重複的溫馨關心。</p>
-                    <div class="tech-tags">
-                        <span class="tag">List 陣列結構</span>
-                        <span class="tag">隨機抽取演算法</span>
-                    </div>
+            <div class="acc-card">
+                <div class="acc-icon">⭐</div>
+                <h3>成果特色</h3>
+                <div class="acc-details">
+                    <ul>
+                        <li style="margin-bottom: 8px;"><strong>低門檻互動：</strong>以積木模組簡單體驗功能</li>
+                        <li style="margin-bottom: 8px;"><strong>多模態回饋：</strong>整合語音、表情、燈光與動作</li>
+                        <li><strong>娛樂與陪伴並重：</strong>兼具娛樂性質與生活互動能力</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-icon">⚡</div>
-                <h3>零延遲狀態機架構</h3>
-                <div class="card-details">
-                    <p>全面採用「變數開關 (State Machine)」邏輯取代不穩定的語音辨識。實現 0 延遲的觸摸回饋，並結合 8 秒超時防呆機制，避免系統卡死，確保互動體驗極致流暢。</p>
-                    <div class="tech-tags">
-                        <span class="tag">狀態機控制</span>
-                        <span class="tag">Timer 倒數防呆</span>
-                    </div>
+            <div class="acc-card">
+                <div class="acc-icon">🚀</div>
+                <h3>未來延伸</h3>
+                <div class="acc-details">
+                    <p>未來可進一步結合更多生活劇本，個人化內容，語音辨識準確度與記憶，讓 Kebbi 在應用陪伴場域中具備更高的智能發展潛能。</p>
                 </div>
             </div>
 
@@ -308,16 +467,4 @@
     </section>
 
     <footer>
-        <h2>第六組 凱比互動娛樂專案</h2>
-        <div class="team-members">
-            <span>組員：</span>
-            <span>王翊安</span> | 
-            <span>李博安</span> | 
-            <span>陳允中</span> | 
-            <span>楊子翔</span>
-        </div>
-        <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.7;">融入生活 • 陪伴情感 • 創造使用動機</p>
-    </footer>
-
-</body>
-</html>
+        <div class="footer
