@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第六組 | AI 冷笑話互動機器人專案</title>
+    <style>
+        /* 基礎重置與字體 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        /* 首頁橫幅 */
+        .hero {
+            background: linear-gradient(135deg, #007BFF 0%, #00c6ff 100%);
+            color: white;
+            padding: 150px 20px 100px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            opacity: 0.95;
+        }
+
+        /* 內容區塊共用設定 */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-bg {
+            background-color: #ffffff;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #007BFF;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* 核心概念卡片 (兩欄式) */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .concept-box {
+            background: #f1f8ff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            border-left: 6px solid #007BFF;
+        }
+
+        .concept-box h3 {
+            color: #007BFF;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* 系統流程步驟 */
+        .flow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .flow-step {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            background: white;
+            padding: 2rem 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .flow-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #007BFF;
+        }
+
+        /* 互動式 Demo 區塊 */
+        .demo-section {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .reaction-btn {
+            background-color: #f8f9fa;
+            color: #333;
+            border: 2px solid #ddd;
+            display: none;
+        }
+
+        .reaction-btn.head:hover { background-color: #ffcccc; border-color: #ff4d4d; color: #d63031; }
+        .reaction-btn.belly:hover { background-color: #cce5ff; border-color: #007BFF; color: #0056b3; }
+
+        /* 模擬機器人狀態顯示 */
+        .kebbi-status {
+            background-color: #282c34;
+            color: #fff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 4px solid #444;
+            transition: border-color 0.5s, box-shadow 0.5s;
+        }
+
+        .kebbi-status p {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            white-space: pre-line;
+        }
+
+        .emotion {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* 頁尾 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 3rem;
+        }
+
+        .team-members {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">Kebbi AI 感測互動成果發表</div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>不只是說笑話，更是陪伴精靈</h1>
+        <p>本專案以 Kebbi 機器人為載體，結合 NUWA CODE LAB 簡易模型設計，打造具備高度娛樂性的陪伴機器人。我們的目標是讓獨居長輩與小孩獲得如同家人般的陪伴，成為科技與人類自然互動的橋樑。</p>
+    </section>
+
+    <section class="section-bg">
+        <h2>專案核心概念</h2>
+        <div class="concept-grid">
+            <div class="concept-box">
+                <h3>🤖 不只是講笑話機器</h3>
+                <p>我們的專案不是單純讓凱比唸稿，而是將冷笑話包裝成完整的互動遊戲。凱比是一個「會表演、會判斷玩家反應、甚至會嘴砲玩家」的幽默夥伴。</p>
+            </div>
+            <div class="concept-box">
+                <h3>🧠 雙層開發架構</h3>
+                <p><strong>基礎版 (觸摸互動)：</strong>穩定優先！玩家透過摸左右手切換難度與開始，摸頭與肚子給予回饋。<br><br><strong>進階版 (憋笑挑戰)：</strong>導入鏡頭 AI 笑容辨識，若成功偵測玩家笑容，將自動觸發凱比的得意嘲諷模式。</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>四層系統運作流程</h2>
+        <div class="flow-container">
+            <div class="flow-step">
+                <div class="flow-icon">👆</div>
+                <h3>1. 接觸感應輸入</h3>
+                <p>透過實體觸碰凱比的左右手、頭部或肚子，低門檻地啟動遊戲與傳遞回饋。</p>
+            </div>
+            <div class="flow-step">
+                <div class="flow-icon">⚙️</div>
+                <h3>2. 系統狀態判斷</h3>
+                <p>程式邏輯判斷當前難度與遊戲階段，確立有笑/沒笑的功能變數與計分機制。</p>
+            </div>
+            <div class="flow-step">
+                <div class="flow-icon">📝</div>
+                <h3>3. 內容生成</h3>
+                <p>呼叫精選預設題庫或接入 OpenAI API，即時生成冷笑話文本與凱比的反應台詞。</p>
+            </div>
+            <div class="flow-step">
+                <div class="flow-icon">🎭</div>
+                <h3>4. 多模態回饋</h3>
+                <p>整合語音朗讀、動態表情、LED 燈光與搞笑肢體動作，給予玩家最具娛樂性的互動輸出。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-bg">
+        <h2>互動流程展示 (Web 模擬版)</h2>
+        <div class="demo-section">
+            <p style="margin-bottom: 2rem; color: #666;">
+                點擊下方按鈕模擬觸碰凱比的感測器，體驗我們真實收集的冷笑話題庫與凱比的嘲諷回饋！
+            </p>
+            
+            <div class="action-buttons">
+                <button id="startBtn" onclick="startJoke()">👉 摸右手：開始冷笑話</button>
+                <button id="headBtn" class="reaction-btn head" onclick="react('funny')">✋ 摸頭：覺得好笑</button>
+                <button id="bellyBtn" class="reaction-btn belly" onclick="react('bad')">✋ 摸肚子：覺得難笑</button>
+            </div>
+            
+            <div class="kebbi-status" id="kebbiScreen">
+                <div class="emotion" id="kebbiFace">(- ‿ -)</div>
+                <p id="kebbiText">大家好我是凱比！歡迎參加冷笑話大賽。<br>準備好的話，請摸我的右手！</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <h2>第六組 凱比互動娛樂專案</h2>
+        <div class="team-members">
+            <span>組員：</span>
+            <span>王翊安</span> | 
+            <span>李博安</span> | 
+            <span>陳允中</span> | 
+            <span>楊子翔</span>
+        </div>
+        <p style="margin-top: 20px; font-size: 0.9rem;">融入生活 • 陪伴情感 • 創造使用動機</p>
+    </footer>
+
+    <script>
+        const startBtn = document.getElementById('startBtn');
+        const headBtn = document.getElementById('headBtn');
+        const bellyBtn = document.getElementById('bellyBtn');
+        const kebbiScreen = document.getElementById('kebbiScreen');
+        const kebbiFace = document.getElementById('kebbiFace');
+        const kebbiText = document.getElementById('kebbiText');
+
+        // 載入企劃書中的真實冷笑話題庫
+        const jokes = [
+            "有一天小明走著進超商，坐著輪椅出來...\n...\n...\n因為他繳費了！",
+            "在動物園抽煙 哪種動物會害怕？\n...\n...\n【火雞】\n因為抽煙前要準備打火機（火雞）！",
+            "蛤蜊放很久會變什麼？\n...\n...\n【白酒蛤蜊】！",
+            "誰最會烤肉？\n...\n...\n【老師】\n因為考的都沒有教（焦）！",
+            "為何得癌症的人特別健談？\n...\n...\n因為他們都有話聊 (化療)！",
+            "為什麼自然科不用特別用功讀？\n...\n...\n因為有讀書，自然考得好！"
+        ];
+
+        let currentScore = 0;
+
+        function startJoke() {
+            startBtn.disabled = true;
+            kebbiScreen.style.borderColor = "#f1c40f";
+            kebbiScreen.style.boxShadow = "0 0 20px rgba(241, 196, 15, 0.5)";
+            kebbiFace.innerText = "(・∀・)";
+            
+            const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+            kebbiText.innerText = "收到指令！冷笑話大賽正式開始，請聽題：\n\n" + randomJoke;
+            
+            // 模擬講笑話的時間 (給玩家閱讀的時間)
+            setTimeout(() => {
+                kebbiFace.innerText = "(・ω・)?";
+                kebbiText.innerText += "\n\n你覺得好笑嗎？\n(好笑請摸我的頭，覺得太冷請摸我的肚子)";
+                
+                // 顯示回應按鈕
+                startBtn.style.display = "none";
+                headBtn.style.display = "inline-block";
+                bellyBtn.style.display = "inline-block";
+            }, 3500);
+        }
+
+        function react(type) {
+            headBtn.style.display = "none";
+            bellyBtn.style.display = "none";
+            startBtn.style.display = "inline-block";
+            startBtn.innerText = "👉 摸右手：再聽一個";
+            startBtn.disabled = false;
+
+            if (type === 'funny') {
+                currentScore += 0;
+                // 發紅光，嘲諷
+                kebbiScreen.style.borderColor = "#e74c3c";
+                kebbiScreen.style.boxShadow = "0 0 30px rgba(231, 76, 60, 0.8)";
+                kebbiFace.innerText = "(✧≖‿ゝ≖)";
+                kebbiText.innerText = "【凱比全身發出紅光，播放歡呼聲】\n你笑了 676767！\n這樣都能笑，你的笑點也太低了吧！\n(得分沒有增加喔)";
+            } else {
+                currentScore += 1;
+                // 發藍光，尷尬
+                kebbiScreen.style.borderColor = "#3498db";
+                kebbiScreen.style.boxShadow = "0 0 30px rgba(52, 152, 219, 0.8)";
+                kebbiFace.innerText = "(；￣Д￣)";
+                kebbiText.innerText = `【凱比低頭發出藍光，播放罐頭笑聲】\n不是我講的笑話不好笑，是你的笑點太高了...\n這是高級幽默，你還沒理解啦！\n(成功防禦！獲得 ${currentScore} 分)`;
+            }
+        }
+    </script>
+</body>
+</html>
