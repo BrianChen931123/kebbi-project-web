@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第六組 | AI 冷笑話互動機器人專案</title>
+    <title>第六組 | 凱比 AI 感測互動專案</title>
     <style>
         /* 基礎重置與字體 */
         * {
@@ -93,52 +93,53 @@
             border-radius: 2px;
         }
 
-        /* 核心概念卡片 (兩欄式) */
-        .concept-grid {
+        /* 核心技術卡片 (四格網格) */
+        .architecture {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            margin-bottom: 3rem;
         }
 
-        .concept-box {
-            background: #f1f8ff;
-            padding: 2.5rem;
-            border-radius: 12px;
-            border-left: 6px solid #007BFF;
-        }
-
-        .concept-box h3 {
-            color: #007BFF;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        /* 系統流程步驟 */
-        .flow-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .flow-step {
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
+        .card {
             background: white;
-            padding: 2rem 1rem;
             border-radius: 10px;
+            padding: 2.5rem 2rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            position: relative;
+            transition: transform 0.3s ease;
+            border-top: 5px solid #007BFF;
+            display: flex;
+            flex-direction: column;
         }
 
-        .flow-icon {
-            font-size: 2.5rem;
+        .card:nth-child(even) {
+            border-top-color: #17a2b8;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card h3 {
+            color: #333;
             margin-bottom: 1rem;
-            color: #007BFF;
+            font-size: 1.4rem;
+        }
+
+        .tech-tags {
+            margin-top: auto;
+            padding-top: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
         }
 
         /* 互動式 Demo 區塊 */
@@ -164,12 +165,13 @@
             background-color: #007BFF;
             color: white;
             border: none;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s;
+            margin: 0.5rem;
         }
 
         button:hover {
@@ -181,6 +183,12 @@
             cursor: not-allowed;
         }
 
+        .btn-joke { background-color: #6f42c1; }
+        .btn-joke:hover { background-color: #59339d; }
+        
+        .btn-guardian { background-color: #17a2b8; }
+        .btn-guardian:hover { background-color: #117a8b; }
+
         .reaction-btn {
             background-color: #f8f9fa;
             color: #333;
@@ -188,8 +196,8 @@
             display: none;
         }
 
-        .reaction-btn.head:hover { background-color: #ffcccc; border-color: #ff4d4d; color: #d63031; }
-        .reaction-btn.belly:hover { background-color: #cce5ff; border-color: #007BFF; color: #0056b3; }
+        .reaction-btn.head:hover { background-color: #d4edda; border-color: #28a745; color: #155724; }
+        .reaction-btn.belly:hover { background-color: #f8d7da; border-color: #dc3545; color: #721c24; }
 
         /* 模擬機器人狀態顯示 */
         .kebbi-status {
@@ -212,6 +220,7 @@
             margin-bottom: 1rem;
             text-align: center;
             white-space: pre-line;
+            line-height: 1.5;
         }
 
         .emotion {
@@ -234,82 +243,99 @@
             justify-content: center;
             gap: 15px;
             color: #aaa;
+            flex-wrap: wrap;
         }
     </style>
 </head>
 <body>
 
+    <!-- 頂部導覽列 -->
     <header>
         <div class="nav-container">
             <div class="logo">Kebbi AI 感測互動成果發表</div>
         </div>
     </header>
 
+    <!-- 首頁橫幅 -->
     <section class="hero">
-        <h1>不只是說笑話，更是陪伴精靈</h1>
-        <p>本專案以 Kebbi 機器人為載體，結合 NUWA CODE LAB 簡易模型設計，打造具備高度娛樂性的陪伴機器人。我們的目標是讓獨居長輩與小孩獲得如同家人般的陪伴，成為科技與人類自然互動的橋樑。</p>
+        <h1>給長輩最溫暖的守護精靈</h1>
+        <p>本專案以 Kebbi 機器人為載體，結合 NUWA CODE LAB 模型設計，打造具備「娛樂冷笑話」與「日常健康關懷」的雙核心陪伴系統，讓獨居長輩獲得如同家人般的陪伴，成為科技與人類自然互動的橋樑。</p>
     </section>
 
+    <!-- 系統架構 -->
     <section class="section-bg">
-        <h2>專案核心概念</h2>
-        <div class="concept-grid">
-            <div class="concept-box">
-                <h3>🤖 不只是講笑話機器</h3>
-                <p>我們的專案不是單純讓凱比唸稿，而是將冷笑話包裝成完整的互動遊戲。凱比是一個「會表演、會判斷玩家反應、甚至會嘴砲玩家」的幽默夥伴。</p>
+        <h2>專案四大核心功能</h2>
+        <div class="architecture">
+            
+            <!-- 卡片 1：打招呼與引導 -->
+            <div class="card">
+                <h3>👋 迎賓引導與規則宣導</h3>
+                <p>啟動時，凱比會主動揮手打招呼，並以清晰親切的語音說明互動規則。透過明確告知「摸頭代表肯定、摸肚子代表否定」，大幅降低長輩與機器人互動的學習門檻。</p>
+                <div class="tech-tags">
+                    <span class="tag">開場設計</span>
+                    <span class="tag">互動引導</span>
+                </div>
             </div>
-            <div class="concept-box">
-                <h3>🧠 雙層開發架構</h3>
-                <p><strong>基礎版 (觸摸互動)：</strong>穩定優先！玩家透過摸左右手切換難度與開始，摸頭與肚子給予回饋。<br><br><strong>進階版 (憋笑挑戰)：</strong>導入鏡頭 AI 笑容辨識，若成功偵測玩家笑容，將自動觸發凱比的得意嘲諷模式。</p>
+
+            <!-- 卡片 2：冷笑話遊戲 -->
+            <div class="card">
+                <h3>🎭 冷笑話互動與動態評分</h3>
+                <p>內建精選冷笑話題庫。講完笑話後，系統會依據長輩的觸摸回饋進行分數加總，給予得意嘲諷（發紅光）或裝傻尷尬（發藍光）的生動反應，顛覆傳統單向說話模式。</p>
+                <div class="tech-tags">
+                    <span class="tag">冷笑話遊戲</span>
+                    <span class="tag">分數變數累加</span>
+                </div>
             </div>
+
+            <!-- 卡片 3：日常守護問候 -->
+            <div class="card">
+                <h3>💖 日常守護與情境問候</h3>
+                <p>捨棄冷冰冰的指令，內建涵蓋「健康關懷、作息追蹤、休閒娛樂」等多元情境的在地化問候語料庫，透過隨機抽取機制，讓長輩每次觸碰都能獲得專屬且不重複的溫馨關心。</p>
+                <div class="tech-tags">
+                    <span class="tag">List 陣列結構</span>
+                    <span class="tag">隨機抽取演算法</span>
+                </div>
+            </div>
+
+            <!-- 卡片 4：狀態機架構 -->
+            <div class="card">
+                <h3>⚡ 零延遲狀態機架構</h3>
+                <p>全面採用「變數開關 (State Machine)」邏輯取代不穩定的語音辨識。實現 0 延遲的觸摸回饋，並結合 8 秒超時防呆機制，避免系統卡死，確保互動體驗極致流暢。</p>
+                <div class="tech-tags">
+                    <span class="tag">狀態機控制</span>
+                    <span class="tag">Timer 倒數防呆</span>
+                </div>
+            </div>
+
         </div>
     </section>
 
+    <!-- 模擬系統運作 Demo -->
     <section>
-        <h2>四層系統運作流程</h2>
-        <div class="flow-container">
-            <div class="flow-step">
-                <div class="flow-icon">👆</div>
-                <h3>1. 接觸感應輸入</h3>
-                <p>透過實體觸碰凱比的左右手、頭部或肚子，低門檻地啟動遊戲與傳遞回饋。</p>
-            </div>
-            <div class="flow-step">
-                <div class="flow-icon">⚙️</div>
-                <h3>2. 系統狀態判斷</h3>
-                <p>程式邏輯判斷當前難度與遊戲階段，確立有笑/沒笑的功能變數與計分機制。</p>
-            </div>
-            <div class="flow-step">
-                <div class="flow-icon">📝</div>
-                <h3>3. 內容生成</h3>
-                <p>呼叫精選預設題庫或接入 OpenAI API，即時生成冷笑話文本與凱比的反應台詞。</p>
-            </div>
-            <div class="flow-step">
-                <div class="flow-icon">🎭</div>
-                <h3>4. 多模態回饋</h3>
-                <p>整合語音朗讀、動態表情、LED 燈光與搞笑肢體動作，給予玩家最具娛樂性的互動輸出。</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-bg">
         <h2>互動流程展示 (Web 模擬版)</h2>
         <div class="demo-section">
-            <p style="margin-bottom: 2rem; color: #666;">
-                點擊下方按鈕模擬觸碰凱比的感測器，體驗我們真實收集的冷笑話題庫與凱比的嘲諷回饋！
+            <p style="margin-bottom: 1.5rem; color: #666;">
+                點擊下方按鈕模擬觸碰凱比，體驗「開場引導」、「冷笑話大賽」與「守護精靈問候」的完整互動邏輯。
             </p>
             
             <div class="action-buttons">
-                <button id="startBtn" onclick="startJoke()">👉 摸右手：開始冷笑話</button>
-                <button id="headBtn" class="reaction-btn head" onclick="react('funny')">✋ 摸頭：覺得好笑</button>
-                <button id="bellyBtn" class="reaction-btn belly" onclick="react('bad')">✋ 摸肚子：覺得難笑</button>
+                <button id="greetBtn" onclick="playGreeting()">👋 啟動：凱比打招呼與宣導</button>
+                <button id="jokeBtn" class="btn-joke" style="display: none;" onclick="triggerMode('joke')">👉 摸右手 (玩冷笑話)</button>
+                <button id="guardianBtn" class="btn-guardian" style="display: none;" onclick="triggerMode('guardian')">👉 摸左手 (日常問候)</button>
+                
+                <button id="headBtn" class="reaction-btn head" onclick="react('head')">✋ 摸頭回饋</button>
+                <button id="bellyBtn" class="reaction-btn belly" onclick="react('belly')">✋ 摸肚子回饋</button>
             </div>
             
+            <!-- 凱比螢幕模擬器 -->
             <div class="kebbi-status" id="kebbiScreen">
-                <div class="emotion" id="kebbiFace">(- ‿ -)</div>
-                <p id="kebbiText">大家好我是凱比！歡迎參加冷笑話大賽。<br>準備好的話，請摸我的右手！</p>
+                <div class="emotion" id="kebbiFace">( ºωº )</div>
+                <p id="kebbiText">機器人待機中...<br>請點擊「啟動」開始測試。</p>
             </div>
         </div>
     </section>
 
+    <!-- 頁尾 -->
     <footer>
         <h2>第六組 凱比互動娛樂專案</h2>
         <div class="team-members">
@@ -319,72 +345,148 @@
             <span>陳允中</span> | 
             <span>楊子翔</span>
         </div>
-        <p style="margin-top: 20px; font-size: 0.9rem;">融入生活 • 陪伴情感 • 創造使用動機</p>
+        <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.7;">融入生活 • 陪伴情感 • 創造使用動機</p>
     </footer>
 
+    <!-- JavaScript 互動邏輯 -->
     <script>
-        const startBtn = document.getElementById('startBtn');
+        const greetBtn = document.getElementById('greetBtn');
+        const jokeBtn = document.getElementById('jokeBtn');
+        const guardianBtn = document.getElementById('guardianBtn');
         const headBtn = document.getElementById('headBtn');
         const bellyBtn = document.getElementById('bellyBtn');
         const kebbiScreen = document.getElementById('kebbiScreen');
         const kebbiFace = document.getElementById('kebbiFace');
         const kebbiText = document.getElementById('kebbiText');
 
-        // 載入企劃書中的真實冷笑話題庫
+        // 資料庫：冷笑話題庫
         const jokes = [
-            "有一天小明走著進超商，坐著輪椅出來...\n...\n...\n因為他繳費了！",
-            "在動物園抽煙 哪種動物會害怕？\n...\n...\n【火雞】\n因為抽煙前要準備打火機（火雞）！",
-            "蛤蜊放很久會變什麼？\n...\n...\n【白酒蛤蜊】！",
-            "誰最會烤肉？\n...\n...\n【老師】\n因為考的都沒有教（焦）！",
-            "為何得癌症的人特別健談？\n...\n...\n因為他們都有話聊 (化療)！",
-            "為什麼自然科不用特別用功讀？\n...\n...\n因為有讀書，自然考得好！"
+            "請問誰最會烤肉？\n...\n...\n答案是老師，因為考的都沒有教（焦）！",
+            "有一天小明走進超商，坐著輪椅出來...\n...\n...\n因為他繳費(腳廢)了！",
+            "在動物園抽煙，哪種動物會害怕？\n...\n...\n答案是火雞！因為要準備打火機！"
         ];
 
-        let currentScore = 0;
+        // 資料庫：守護精靈問候語
+        const greetings = [
+            "今天過得開心嗎？\n(遇到開心的事請摸頭，有點無聊請摸肚子)",
+            "今天有按時吃飯吃藥嗎？\n(有記得請摸頭，不小心忘記請摸肚子)",
+            "今天身體有沒有哪裡覺得痠痛？\n(很健康請摸頭，有痠痛請摸肚子)"
+        ];
 
-        function startJoke() {
-            startBtn.disabled = true;
-            kebbiScreen.style.borderColor = "#f1c40f";
-            kebbiScreen.style.boxShadow = "0 0 20px rgba(241, 196, 15, 0.5)";
+        let currentMode = ''; // 紀錄現在是笑話模式還是問候模式
+        let canAnswer = false; 
+        let timeoutId;
+        let score = 0;
+
+        // 1. 打招呼與規則宣導
+        function playGreeting() {
+            greetBtn.style.display = "none";
+            kebbiScreen.style.borderColor = "#007BFF";
             kebbiFace.innerText = "(・∀・)";
+            kebbiText.innerText = "【凱比舉起手揮手】\n大家好我是凱比！\n遊戲規則是：如果覺得好笑或同意，請摸我的頭；覺得難笑或需要關心，請摸我的肚子。\n\n準備好的話，請摸我的手！";
             
-            const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-            kebbiText.innerText = "收到指令！冷笑話大賽正式開始，請聽題：\n\n" + randomJoke;
-            
-            // 模擬講笑話的時間 (給玩家閱讀的時間)
             setTimeout(() => {
-                kebbiFace.innerText = "(・ω・)?";
-                kebbiText.innerText += "\n\n你覺得好笑嗎？\n(好笑請摸我的頭，覺得太冷請摸我的肚子)";
-                
-                // 顯示回應按鈕
-                startBtn.style.display = "none";
-                headBtn.style.display = "inline-block";
-                bellyBtn.style.display = "inline-block";
-            }, 3500);
+                jokeBtn.style.display = "inline-block";
+                guardianBtn.style.display = "inline-block";
+            }, 1000);
         }
 
-        function react(type) {
+        // 2. 觸發不同模式
+        function triggerMode(mode) {
+            jokeBtn.disabled = true;
+            guardianBtn.disabled = true;
+            canAnswer = true; 
+            currentMode = mode;
+            
+            kebbiScreen.style.borderColor = "#f1c40f";
+            kebbiScreen.style.boxShadow = "0 0 20px rgba(241, 196, 15, 0.5)";
+            kebbiFace.innerText = "(・ω・)?";
+            
+            if (mode === 'joke') {
+                const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+                kebbiText.innerText = "冷笑話大賽開始！請聽題：\n\n" + randomJoke + "\n\n(覺得好笑請摸頭，不好笑請摸肚子)";
+            } else {
+                const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+                kebbiText.innerText = randomGreeting;
+            }
+            
+            // 顯示觸摸回應按鈕
+            jokeBtn.style.display = "none";
+            guardianBtn.style.display = "none";
+            headBtn.style.display = "inline-block";
+            bellyBtn.style.display = "inline-block";
+
+            // 8 秒超時防呆機制
+            timeoutId = setTimeout(() => {
+                if (canAnswer) {
+                    canAnswer = false; 
+                    resetToIdle();
+                }
+            }, 8000);
+        }
+
+        // 3. 觸摸回饋處理
+        function react(touchPart) {
+            if (!canAnswer) return; 
+            
+            canAnswer = false; 
+            clearTimeout(timeoutId); 
+
             headBtn.style.display = "none";
             bellyBtn.style.display = "none";
-            startBtn.style.display = "inline-block";
-            startBtn.innerText = "👉 摸右手：再聽一個";
-            startBtn.disabled = false;
+            jokeBtn.style.display = "inline-block";
+            guardianBtn.style.display = "inline-block";
+            jokeBtn.disabled = false;
+            guardianBtn.disabled = false;
 
-            if (type === 'funny') {
-                currentScore += 0;
-                // 發紅光，嘲諷
+            if (currentMode === 'joke') {
+                handleJokeReaction(touchPart);
+            } else {
+                handleGuardianReaction(touchPart);
+            }
+        }
+
+        function handleJokeReaction(touchPart) {
+            if (touchPart === 'head') {
                 kebbiScreen.style.borderColor = "#e74c3c";
                 kebbiScreen.style.boxShadow = "0 0 30px rgba(231, 76, 60, 0.8)";
                 kebbiFace.innerText = "(✧≖‿ゝ≖)";
-                kebbiText.innerText = "【凱比全身發出紅光，播放歡呼聲】\n你笑了 676767！\n這樣都能笑，你的笑點也太低了吧！\n(得分沒有增加喔)";
+                kebbiText.innerText = "【發出紅光】\n你笑了 676767！這樣都能笑，你的笑點也太低了吧！";
             } else {
-                currentScore += 1;
-                // 發藍光，尷尬
+                score++;
                 kebbiScreen.style.borderColor = "#3498db";
                 kebbiScreen.style.boxShadow = "0 0 30px rgba(52, 152, 219, 0.8)";
                 kebbiFace.innerText = "(；￣Д￣)";
-                kebbiText.innerText = `【凱比低頭發出藍光，播放罐頭笑聲】\n不是我講的笑話不好笑，是你的笑點太高了...\n這是高級幽默，你還沒理解啦！\n(成功防禦！獲得 ${currentScore} 分)`;
+                kebbiText.innerText = `【發出藍光】\n這可是高級幽默，你還沒理解啦！\n(防禦成功！目前分數：${score})`;
             }
+        }
+
+        function handleGuardianReaction(touchPart) {
+            if (touchPart === 'head') {
+                kebbiScreen.style.borderColor = "#28a745";
+                kebbiScreen.style.boxShadow = "0 0 30px rgba(40, 167, 69, 0.8)";
+                kebbiFace.innerText = "(≧▽≦)";
+                kebbiText.innerText = "【發出綠光】\n太棒了！要繼續保持健康開心喔！凱比最喜歡看到你這樣了。";
+            } else {
+                kebbiScreen.style.borderColor = "#dc3545";
+                kebbiScreen.style.boxShadow = "0 0 30px rgba(220, 53, 69, 0.8)";
+                kebbiFace.innerText = "( ´•̥̥̥ω•̥̥̥` )";
+                kebbiText.innerText = "【發出紅光】\n聽起來不太舒服，凱比幫你呼呼！要多休息，如果不舒服要記得跟家人說喔！";
+            }
+        }
+
+        function resetToIdle() {
+            headBtn.style.display = "none";
+            bellyBtn.style.display = "none";
+            jokeBtn.style.display = "inline-block";
+            guardianBtn.style.display = "inline-block";
+            jokeBtn.disabled = false;
+            guardianBtn.disabled = false;
+            
+            kebbiScreen.style.borderColor = "#444";
+            kebbiScreen.style.boxShadow = "none";
+            kebbiFace.innerText = "(- ‿ -)";
+            kebbiText.innerText = "沒關係，凱比會一直在這裡陪你喔！";
         }
     </script>
 </body>
