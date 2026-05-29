@@ -17,7 +17,7 @@
             background-color: #f4f7f6;
             color: #333;
             line-height: 1.6;
-            overflow-x: hidden; /* 防止手機版橫向捲動 */
+            overflow-x: hidden;
         }
 
         /* 導覽列 */
@@ -143,18 +143,20 @@
             border-radius: 10px;
             border-left: 5px solid #ffc107;
             width: 280px;
-            flex-grow: 1; /* 讓小螢幕自動撐滿 */
+            flex-grow: 1;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         
         .goal-item h4 { color: #333; margin-bottom: 0.5rem; font-size: 1.1rem;}
         .goal-item p { font-size: 0.95rem; color: #555; }
 
-        /* 核心功能卡片 (2欄) */
+        /* ========================================= */
+        /* 核心功能卡片 (新增動態變化與問候功能) */
+        /* ========================================= */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 改為 280px 適應手機 */
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 2.5rem;
         }
 
         .feature-card {
@@ -164,15 +166,26 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.06);
             border-top: 5px solid #007BFF;
             position: relative;
+            cursor: pointer;
+            /* 加入平滑的過渡動畫 */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
+        /* 卡片懸停特效：上浮且微放大 */
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+
+        /* 替三張卡片設定不同的專屬顏色 */
+        .feature-card:nth-child(1) { border-top-color: #007BFF; }
         .feature-card:nth-child(2) { border-top-color: #ffc107; }
+        .feature-card:nth-child(3) { border-top-color: #28a745; }
 
         .feature-number {
             position: absolute;
             top: -20px;
             left: 20px;
-            background: #007BFF;
             color: white;
             width: 45px;
             height: 45px;
@@ -183,45 +196,69 @@
             font-size: 1.5rem;
             font-weight: bold;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.4s ease;
         }
 
-        .feature-card:nth-child(2) .feature-number { background: #ffc107; color: #333;}
+        .feature-card:nth-child(1) .feature-number { background: #007BFF; }
+        .feature-card:nth-child(2) .feature-number { background: #ffc107; color: #333; }
+        .feature-card:nth-child(3) .feature-number { background: #28a745; }
+
+        /* 滑鼠懸停時，數字球也會跟著旋轉放大 */
+        .feature-card:hover .feature-number {
+            transform: scale(1.2) rotate(10deg);
+        }
 
         .feature-card h3 {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             margin-bottom: 1rem;
             color: #2c3e50;
             margin-top: 10px;
         }
 
-        /* 系統流程圖 UI */
+        /* ========================================= */
+        /* 系統流程圖 UI (新增箭頭動畫與懸停特效) */
+        /* ========================================= */
         .flow-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
             background: #2c3e50;
-            padding: 2.5rem;
+            padding: 3rem 2.5rem;
             border-radius: 15px;
             color: white;
-            flex-wrap: nowrap; /* 預設不換行 */
+            flex-wrap: nowrap; 
             gap: 1rem;
         }
 
         .flow-step {
             text-align: center;
             flex: 1;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* 滑鼠懸停時，流程圖示放大發光 */
+        .flow-step:hover {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
         }
 
         .flow-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+
+        /* 箭頭的水平來回移動動畫 */
+        @keyframes pointRight {
+            0% { transform: translateX(-5px); }
+            100% { transform: translateX(5px); }
         }
 
         .flow-arrow {
             font-size: 2rem;
             color: #ffc107;
             font-weight: bold;
-            transition: transform 0.3s;
+            animation: pointRight 0.8s infinite alternate ease-in-out;
         }
 
         .flow-desc {
@@ -233,6 +270,11 @@
             padding: 1.5rem;
             border-radius: 8px;
             border-left: 5px solid #2c3e50;
+            transition: background 0.3s ease;
+        }
+        
+        .flow-desc:hover {
+            background: #e9ecef;
         }
 
         /* 手風琴 (Hover Accordion) 效果區塊 */
@@ -341,48 +383,51 @@
         /* ========================================= */
         @media (max-width: 768px) {
             
-            /* 調整標題大小與間距 */
             .hero { padding: 100px 20px 60px; }
             .hero h1 { font-size: 2.2rem; }
             .hero h3 { font-size: 1.2rem; }
             section { padding: 3rem 1.5rem; }
             .section-bg { padding: 2rem 1.5rem; }
             
-            /* 流程圖：改為上下排列，箭頭往下指 */
+            /* 流程圖：改為上下排列，箭頭動畫改為上下跳動 */
             .flow-container {
                 flex-direction: column;
-                padding: 1.5rem;
+                padding: 2.5rem 1.5rem;
             }
+            
+            @keyframes pointDown {
+                0% { transform: translateY(-5px) rotate(90deg); }
+                100% { transform: translateY(5px) rotate(90deg); }
+            }
+            
             .flow-arrow {
-                transform: rotate(90deg); /* 箭頭旋轉向下 */
-                margin: 5px 0;
+                animation: pointDown 0.8s infinite alternate ease-in-out;
+                margin: 15px 0;
             }
 
-            /* 手風琴特效取消：手機改為直接全部展開閱讀，增加 UX */
             .accordion-container {
-                flex-direction: column; /* 改為上下排列 */
-                height: auto; /* 取消固定高度 */
+                flex-direction: column; 
+                height: auto; 
             }
             .acc-card {
-                flex: auto; /* 取消伸展比例 */
+                flex: auto; 
                 width: 100%;
                 padding: 1.5rem;
                 margin-bottom: 1rem;
             }
             .acc-card h3 {
-                white-space: normal; /* 允許標題換行 */
+                white-space: normal; 
             }
             .acc-card:hover {
-                transform: none; /* 取消手機上的上浮動畫 */
+                transform: none; 
             }
             .acc-details {
-                opacity: 1; /* 預設完全顯示內容 */
+                opacity: 1; 
                 max-height: 500px;
                 margin-top: 1rem;
                 min-width: unset;
             }
 
-            /* 導覽列標題縮小 */
             .logo { font-size: 1.2rem; }
         }
     </style>
@@ -443,6 +488,11 @@
                 <h3>命運抽籤</h3>
                 <p>使用者可透過聲控啟動抽籤流程，系統隨機抽取一句命運籤建議，並以語音與表情動作呈現結果，增加使用趣味性。互動過程日常陪伴性，使機器人不只是語音機器，也能提供情緒安慰感。</p>
             </div>
+            <div class="feature-card">
+                <div class="feature-number">3</div>
+                <h3>溫暖問候與陪伴</h3>
+                <p>捨棄冷冰冰的指令，內建多樣化的在地語料庫。凱比會透過「開關狀態機」給予零延遲的專屬關懷與健康追蹤，讓長輩每次觸碰都能獲得不重複的溫馨陪伴。</p>
+            </div>
         </div>
     </section>
 
@@ -451,7 +501,7 @@
         <div class="flow-container">
             <div class="flow-step">
                 <div class="flow-icon">🎙️</div>
-                <div>聲音輸入</div>
+                <div>聲音/觸控輸入</div>
             </div>
             <div class="flow-arrow">➔</div>
             <div class="flow-step">
@@ -466,11 +516,11 @@
             <div class="flow-arrow">➔</div>
             <div class="flow-step">
                 <div class="flow-icon">✨</div>
-                <div>語音 / 表情 / 動作 / 燈光回饋</div>
+                <div>多模態感官回饋</div>
             </div>
         </div>
         <div class="flow-desc">
-            本專案以模組化積木為主要核心，透過 Nuwa Code Lab 積木邏輯開展不同互動事件，再分別呼叫冷笑話與抽籤模組，最後整合語音輸出、臉部表情、燈光與動作完成回饋。
+            本專案以模組化積木為主要核心，透過 Nuwa Code Lab 積木邏輯開展不同互動事件，再分別呼叫冷笑話、抽籤與問候模組，最後整合語音輸出、臉部表情、燈光與動作完成零延遲互動。
         </div>
     </section>
 
