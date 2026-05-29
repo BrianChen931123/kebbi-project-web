@@ -128,30 +128,43 @@
             transform: scale(1.02);
         }
 
-        /* 設計目標清單 */
+        /* ========================================= */
+        /* 設計目標清單 (更新為 2x2 網格排版) */
+        /* ========================================= */
         .goals-container {
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 強制兩欄等寬 */
             gap: 2rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
+            margin: 2rem auto 0;
+            max-width: 900px; /* 限制最大寬度，讓卡片比例更好看 */
         }
 
         .goal-item {
             background: #f8fbff;
-            padding: 1.5rem;
+            padding: 1.8rem;
             border-radius: 10px;
             border-left: 5px solid #ffc107;
-            width: 280px;
-            flex-grow: 1;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
         }
         
-        .goal-item h4 { color: #333; margin-bottom: 0.5rem; font-size: 1.1rem;}
-        .goal-item p { font-size: 0.95rem; color: #555; }
+        .goal-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .goal-item h4 { 
+            color: #333; 
+            margin-bottom: 0.8rem; 
+            font-size: 1.2rem;
+        }
+        
+        .goal-item p { 
+            font-size: 1rem; 
+            color: #555; 
+        }
 
         /* ========================================= */
-        /* 核心功能卡片 (新增動態變化與問候功能) */
+        /* 核心功能卡片 */
         /* ========================================= */
         .features-grid {
             display: grid;
@@ -167,17 +180,14 @@
             border-top: 5px solid #007BFF;
             position: relative;
             cursor: pointer;
-            /* 加入平滑的過渡動畫 */
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* 卡片懸停特效：上浮且微放大 */
         .feature-card:hover {
             transform: translateY(-15px) scale(1.02);
             box-shadow: 0 15px 35px rgba(0,0,0,0.12);
         }
 
-        /* 替三張卡片設定不同的專屬顏色 */
         .feature-card:nth-child(1) { border-top-color: #007BFF; }
         .feature-card:nth-child(2) { border-top-color: #ffc107; }
         .feature-card:nth-child(3) { border-top-color: #28a745; }
@@ -203,7 +213,6 @@
         .feature-card:nth-child(2) .feature-number { background: #ffc107; color: #333; }
         .feature-card:nth-child(3) .feature-number { background: #28a745; }
 
-        /* 滑鼠懸停時，數字球也會跟著旋轉放大 */
         .feature-card:hover .feature-number {
             transform: scale(1.2) rotate(10deg);
         }
@@ -216,7 +225,7 @@
         }
 
         /* ========================================= */
-        /* 系統流程圖 UI (新增箭頭動畫與懸停特效) */
+        /* 系統流程圖 UI */
         /* ========================================= */
         .flow-container {
             display: flex;
@@ -237,7 +246,6 @@
             cursor: pointer;
         }
 
-        /* 滑鼠懸停時，流程圖示放大發光 */
         .flow-step:hover {
             transform: scale(1.15);
             filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
@@ -248,7 +256,6 @@
             margin-bottom: 15px;
         }
 
-        /* 箭頭的水平來回移動動畫 */
         @keyframes pointRight {
             0% { transform: translateX(-5px); }
             100% { transform: translateX(5px); }
@@ -277,7 +284,9 @@
             background: #e9ecef;
         }
 
-        /* 手風琴 (Hover Accordion) 效果區塊 */
+        /* ========================================= */
+        /* 專案綜覽 手風琴 (Hover Accordion) */
+        /* ========================================= */
         .accordion-container {
             display: flex;
             justify-content: center;
@@ -349,7 +358,45 @@
             margin-top: 1.5rem;
         }
 
+        /* ========================================= */
+        /* 文獻資料區塊 */
+        /* ========================================= */
+        .references-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #f8fbff;
+            padding: 2.5rem 3rem;
+            border-radius: 10px;
+            border-left: 5px solid #2c3e50;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .references-container ol {
+            padding-left: 1.5rem;
+        }
+
+        .references-container li {
+            margin-bottom: 1.2rem;
+        }
+
+        .references-container a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .references-container a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* ========================================= */
         /* 頁尾 */
+        /* ========================================= */
         footer {
             background-color: #1a1a1a;
             color: white;
@@ -377,7 +424,6 @@
             flex-wrap: wrap;
         }
 
-
         /* ========================================= */
         /* 手機版響應式設計 (Responsive Web Design) */
         /* ========================================= */
@@ -389,7 +435,12 @@
             section { padding: 3rem 1.5rem; }
             .section-bg { padding: 2rem 1.5rem; }
             
-            /* 流程圖：改為上下排列，箭頭動畫改為上下跳動 */
+            /* 設計目標在手機上變成單欄 */
+            .goals-container {
+                grid-template-columns: 1fr;
+            }
+
+            /* 流程圖動畫與排版 */
             .flow-container {
                 flex-direction: column;
                 padding: 2.5rem 1.5rem;
@@ -405,6 +456,7 @@
                 margin: 15px 0;
             }
 
+            /* 手風琴在手機上展開 */
             .accordion-container {
                 flex-direction: column; 
                 height: auto; 
@@ -426,6 +478,11 @@
                 max-height: 500px;
                 margin-top: 1rem;
                 min-width: unset;
+            }
+
+            /* 文獻資料區塊縮減內距 */
+            .references-container {
+                padding: 1.5rem;
             }
 
             .logo { font-size: 1.2rem; }
@@ -526,7 +583,6 @@
 
     <section>
         <h2>專案綜覽與未來展望</h2>
-        <p style="text-align: center; color: #666; margin-bottom: 2rem;">(電腦版支援滑鼠懸停展開卡片)</p>
         
         <div class="accordion-container">
             
@@ -566,6 +622,18 @@
                 </div>
             </div>
 
+        </div>
+    </section>
+
+    <section class="section-bg" style="margin-bottom: 0; border-radius: 15px 15px 0 0;">
+        <h2>文獻資料</h2>
+        <div class="references-container">
+            <ol>
+                <li><a href="https://support.nuwarobotics.com/en/docs/kebbiairs/mobile/codelab_air/" target="_blank">NUWA Support：CodeLab Air 說明</a> - 指出 CodeLab 含身體動作、臉部效果與音效方塊。</li>
+                <li><a href="https://support.nuwarobotics.com/en/docs/kebbiairs/contents/ai_recognition/" target="_blank">NUWA Support：Facial Recognition and Object Identification</a> - 說明臉部辨識、物件辨識與辨識限制。</li>
+                <li><a href="https://support.nuwarobotics.com/en/docs/kebbiairs/contents/interactive_games/" target="_blank">NUWA Support：Interactive Games</a> - 說明臉部偵測與物件追蹤可用於互動遊戲。</li>
+                <li><a href="https://fcc.report/FCC-ID/2AWC2AIRH201/4746817.pdf" target="_blank">Kebbi Air 英文說明書</a> - 列出觸摸感應區域包含頭、左右臉頰、肚子、左右手。</li>
+            </ol>
         </div>
     </section>
 
